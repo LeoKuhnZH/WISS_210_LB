@@ -1,0 +1,44 @@
+name: Build Vaultwarden Artifact
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+    paths:
+      - 'Vaultwarden/**'
+      - '.github/workflows/build-vaultwarden-artifact.yml'
+  pull_request:
+    paths:
+      - 'Vaultwarden/**'
+      - '.github/workflows/build-vaultwarden-artifact.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Build Docker image
+        uses: docker/build-push-action@v6
+        with:
+          context: ./Vaultwarden
+          file: ./Vaultwarden/Dockerfile
+          tags: vaultwarden-custom:ci
+          outputs: type=docker,dest=/tmp/vaultwarden-image.tar
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: vaultwarden-image
+          path: /tmp/vaultwarden-image.tar
+          retention-days: 7
+          if-no-files-found: error
