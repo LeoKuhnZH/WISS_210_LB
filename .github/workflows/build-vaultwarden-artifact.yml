@@ -33,12 +33,12 @@ jobs:
           context: ./Vaultwarden
           file: ./Vaultwarden/Dockerfile
           tags: vaultwarden-custom:ci
-          outputs: type=docker,dest=/tmp/vaultwarden-image.tar
+          outputs: type=docker,dest=/tmp/vaultwarden-boot.tar
 
       - name: Upload artifact
         uses: actions/upload-artifact@v4
         with:
-          name: vaultwarden-image
-          path: /tmp/vaultwarden-image.tar
+          name: vaultwarden-boot
+          path: /tmp/vaultwarden-boot.tar
           retention-days: 7
           if-no-files-found: error
