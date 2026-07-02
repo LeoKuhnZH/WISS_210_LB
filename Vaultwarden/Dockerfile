@@ -1,4 +1,4 @@
-# Stage 1: Build Caddy with the Cloudflare DNS plugin
+# Neue Änderungen
 FROM caddy:builder AS caddy-build
 RUN xcaddy build \
     --with github.com/caddy-dns/cloudflare
